@@ -111,8 +111,7 @@ data_plot <- ggplot (imp_data, aes(y = hardness.in.HLC, x = raw.material,
                                    fill = raw.material)) + 
              theme_classic() +
              theme(legend.title = element_blank()) +
-             geom_boxplot() + 
-             scale_fill_manual(values=wes_palette(n =3,name = "Darjeeling2")) +
+             geom_boxplot(fill = c("#ECCBAE", "#D69C4E", "#046C9A")) + 
              geom_jitter() + labs(x="raw material", 
                                   y="Leeb Rebound Hardness in HLC", title="") 
 
