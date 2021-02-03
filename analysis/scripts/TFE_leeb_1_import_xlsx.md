@@ -1,7 +1,7 @@
 Equotip hardness measurements - Tool function experiment
 ================
 Lisa Schunk
-2020-09-10
+2021-01-22
 
   - [Goal of the script](#goal-of-the-script)
   - [Load packages](#load-packages)
@@ -25,8 +25,8 @@ the Equotip Leeb C rebound) and formats the data for a statistical
 analysis.  
 The script will:
 
-1.  Reads in the original xlsx file and organises the data
-2.  Plots the data
+1.  Read in the original xlsx file and organise the data
+2.  Plot the data
 3.  Write an XLSX-file and save an R object ready for further analysis
     in R
 
@@ -156,7 +156,7 @@ data_plot <- ggplot (imp_data, aes(y = hardness.in.HLC, x = raw.material,
   theme(legend.title = element_blank()) +
   geom_boxplot() + 
   scale_fill_manual(values=wes_palette(n =3,name = "Darjeeling2")) +
-  geom_jitter() + labs(x="Raw material", y="Leeb Rebound Hardness in HLC", title="") 
+  geom_jitter() + labs(x="raw material", y="Leeb Rebound Hardness in HLC", title="") 
 
 print(data_plot)
 ```
@@ -188,7 +188,7 @@ The checksum (MD5 hashes) of the exported files are:
 
 ``` 
        analysis/plots/_IE_plot.pdf       analysis/plots/_TFE_plot.pdf 
-"b55093e7922a9f0e3f5fb1dfb87e15cb" "d6992a2c2fb56f7c80b03ee2e543f36f" 
+"10061238e01653910d8b3df4b10ef10f" "e811b486358ad0649db03298228b4234" 
 ```
 
 -----
@@ -221,7 +221,7 @@ other attached packages:
  [9] readxl_1.3.1      ggplot2_3.3.2     readr_1.3.1       openxlsx_4.1.5   
 
 loaded via a namespace (and not attached):
- [1] tidyselect_1.1.0 xfun_0.16        haven_2.3.1      colorspace_1.4-1
+ [1] tidyselect_1.1.0 xfun_0.17        haven_2.3.1      colorspace_1.4-1
  [5] vctrs_0.3.4      generics_0.0.2   htmltools_0.5.0  yaml_2.2.1      
  [9] blob_1.2.1       rlang_0.4.7      pillar_1.4.6     glue_1.4.2      
 [13] withr_2.2.0      DBI_1.1.0        dbplyr_1.4.4     modelr_0.1.8    

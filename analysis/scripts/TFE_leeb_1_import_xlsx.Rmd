@@ -1,5 +1,5 @@
 ---
-title: 'Equotip hardness measurements - Tool function experiment '
+title: 'Equotip hardness measurements - Tool function experiment'
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
 output:
@@ -28,13 +28,12 @@ knitr::opts_chunk$set(comment=NA, message=FALSE, indent="", error=TRUE)
 
 
 # Goal of the script
-This script reads the xlsx file (measurements have been generated with the Equotip Leeb C
-rebound)  and formats the data for a statistical analysis.  
+This script reads the xlsx file (measurements have been generated with the Equotip Leeb C rebound)  and formats the data for a statistical analysis.  
 The script will:
 
-1. Reads in the original xlsx file and organises the data 
-2. Plots the data 
-2. Write an XLSX-file and save an R object ready for further analysis in R 
+1. Read in the original xlsx file and organise the data 
+2. Plot the data 
+3. Write an XLSX-file and save an R object ready for further analysis in R 
 
 
 
@@ -125,9 +124,10 @@ data_plot <- ggplot (imp_data, aes(y = hardness.in.HLC, x = raw.material,
   theme(legend.title = element_blank()) +
   geom_boxplot() + 
   scale_fill_manual(values=wes_palette(n =3,name = "Darjeeling2")) +
-  geom_jitter() + labs(x="Raw material", y="Leeb Rebound Hardness in HLC", title="") 
+  geom_jitter() + labs(x="raw material", y="Leeb Rebound Hardness in HLC", title="") 
 
 print(data_plot)
+
 ```
 
 

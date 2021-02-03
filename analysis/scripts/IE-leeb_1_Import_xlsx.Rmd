@@ -1,44 +1,32 @@
 ---
-title: 'Equotip hardness measurements - "Initial experiment"'
+title: "Equotip hardness measurements - "Initial experiment""
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
-output:
-  html_document:
-    toc: true
-    toc_depth: 3
-    toc_float: true
-    theme: cerulean
-    highlight: pygments
-    number_sections: true
-  github_document: 
-    toc: true
-    toc_depth: 3
-    html_preview: false
-knit: (function(inputFile, encoding) {
-  rmarkdown::render(inputFile, encoding = encoding, output_format = "all", 
-  knit_root_dir = rprojroot::find_rstudio_root_file()) })
+output: word_document
 ---
 
 
 ```{r Knitr Options, include=FALSE}
 knitr::opts_chunk$set(comment=NA, message=FALSE, indent="", error=TRUE)
-````
 
+```
 
 
 # Goal of the script
-This script reads the xlsx file (measurements have been generated with the Equotip Leeb C
-rebound)  and formats the data for a statistical analysis.  
+This script reads the xlsx file (measurements have been generated with the Equotip
+Leeb C rebound) and formats the data for a statistical analysis.  
 The script will:
 
-1. Reads in the original xlsx file and organises the data 
-2. Write an XLSX-file and save an R object ready for further analysis in R 
+1. Read in the original xlsx file and organise the data 
+2. Plot the data
+3. Write an XLSX-file and save an R object ready for further analysis in R 
 
 
 
 ```{r}
 dir_in <- "analysis/raw_data/"
 dir_out <- "analysis/plots"
+
 ```
 
 Raw data must be located in `r paste0("~/", dir_in)`.  
@@ -58,6 +46,7 @@ library(ggplot2)
 library(readxl)
 library(tidyverse)
 library(wesanderson)
+
 ```
 
 ---
@@ -69,20 +58,23 @@ data_file <- list.files(dir_in, pattern = "\\.xlsx$", full.names = TRUE)
 md5_in <- md5sum(data_file)
 info_in <- data.frame(files = basename(names(md5_in)), checksum = md5_in, 
                       row.names = NULL)
+
 ```
 
 The checksum (MD5 hashes) of the imported files are:  
 ```{r, echo = FALSE}
 info_in
+
 ```
 
 
 # Read in original xlsx-file
 ```{r}
-imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 3, colNames = TRUE,
+imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 3, 
+                      colNames = TRUE,
                       rowNames = FALSE, skipEmptyRows = FALSE) 
 
-# changes the mode of 'hardness in HLC from character to numeric 
+# changes the mode of 'hardness in HLC' from character to numeric 
 imp_data$hardness.in.HLC <- as.numeric(imp_data$hardness.in.HLC)
 str(imp_data)
 
@@ -115,17 +107,18 @@ summary(balve[["hardness.in.HLC"]])
 # Data analsysis - plot 
 ```{r}
 # boxplot
-data_plot <- ggplot (imp_data, aes(y = hardness.in.HLC, x = raw.material, fill =
-                                     raw.material)) + 
-  theme_classic() +
-  theme(legend.title = element_blank()) +
-  geom_boxplot() + 
-  scale_fill_manual(values=wes_palette(n =3,name = "Darjeeling2")) +
-  geom_jitter() + labs(x="Raw material", y="Leeb Rebound Hardness in HLC", title="") 
+data_plot <- ggplot (imp_data, aes(y = hardness.in.HLC, x = raw.material, 
+                                   fill = raw.material)) + 
+             theme_classic() +
+             theme(legend.title = element_blank()) +
+             geom_boxplot() + 
+             scale_fill_manual(values=wes_palette(n =3,name = "Darjeeling2")) +
+             geom_jitter() + labs(x="raw material", 
+                                  y="Leeb Rebound Hardness in HLC", title="") 
 
 print(data_plot)
-```
 
+```
 
 
 # Save data
@@ -140,24 +133,10 @@ The files will be saved as "`r paste0("~/", dir_out, ".[ext]")`".
 ---
 
 
-# Show plot files information
-```{r}
-info_out <- list.files(path = dir_out, pattern = "\\.pdf$", 
-                       full.names = TRUE) %>% 
-            md5sum()
-```
-
-
-The checksum (MD5 hashes) of the exported files are:  
-```{r, echo = FALSE}
-info_out
-```
-
----
-
 # sessionInfo() and RStudio version
 ```{r}
 sessionInfo()
+
 ```
 
 ---
