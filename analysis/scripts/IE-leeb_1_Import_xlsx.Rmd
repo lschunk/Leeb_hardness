@@ -1,5 +1,5 @@
 ---
-title: "Equotip hardness measurements - "Initial experiment""
+title: "Equotip hardness measurements - 'Initial experiment'"
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
 output: word_document
@@ -61,6 +61,7 @@ info_in <- data.frame(files = basename(names(md5_in)), checksum = md5_in,
 
 ```
 
+
 The checksum (MD5 hashes) of the imported files are:  
 ```{r, echo = FALSE}
 info_in
@@ -83,7 +84,6 @@ lydite <- imp_data[31:35,]
 balve <- imp_data[36,]
 
 ```
-
 
 
 # Data analsysis - stats  

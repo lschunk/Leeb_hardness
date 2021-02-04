@@ -1,28 +1,15 @@
 ---
-title: 'Equotip hardness measurements - Tool function experiment'
+title: "Equotip hardness measurements - Tool function experiment"
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
-output:
-  html_document:
-    toc: true
-    toc_depth: 3
-    toc_float: true
-    theme: cerulean
-    highlight: pygments
-    number_sections: true
-  github_document: 
-    toc: true
-    toc_depth: 3
-    html_preview: false
-knit: (function(inputFile, encoding) {
-  rmarkdown::render(inputFile, encoding = encoding, output_format = "all", 
-  knit_root_dir = rprojroot::find_rstudio_root_file()) })
+output: word_document
 ---
 
 
 ```{r Knitr Options, include=FALSE}
 knitr::opts_chunk$set(comment=NA, message=FALSE, indent="", error=TRUE)
-````
+
+```
 
 ---
 
@@ -40,6 +27,7 @@ The script will:
 ```{r}
 dir_in <- "analysis/raw_data_TFE/"
 dir_out <- "analysis/plots"
+
 ```
 
 Raw data must be located in `r paste0("~/", dir_in)`.  
@@ -59,6 +47,7 @@ library(ggplot2)
 library(readxl)
 library(tidyverse)
 library(wesanderson)
+
 ```
 
 ---
@@ -69,12 +58,14 @@ library(wesanderson)
 data_file <- list.files(dir_in, pattern = "\\.xlsx$", full.names = TRUE)
 md5_in <- md5sum(data_file)
 info_in <- data.frame(files = basename(names(md5_in)), checksum = md5_in, 
-                      row.names = NULL)
+                  row.names = NULL)
+
 ```
 
 The checksum (MD5 hashes) of the imported files are:  
 ```{r, echo = FALSE}
 info_in
+
 ```
 
 
@@ -95,9 +86,7 @@ balve <- imp_data[53,]
 ```
 
 
-
 #### 4. Data analsysis - stats  
-
 ```{r}
 # descriptive statistics 
 # flint
@@ -130,7 +119,6 @@ print(data_plot)
 ```
 
 
-
 # Save data
 ## Define output file name
 ```{r}
@@ -143,24 +131,11 @@ The files will be saved as "`r paste0("~/", dir_out, ".[ext]")`".
 ---
 
 
-# Show plot files information
-```{r}
-info_out <- list.files(path = dir_out, pattern = "\\.pdf$", 
-                       full.names = TRUE) %>% 
-            md5sum()
-```
-
-
-The checksum (MD5 hashes) of the exported files are:  
-```{r, echo = FALSE}
-info_out
-```
-
----
 
 # sessionInfo() and RStudio version
 ```{r}
 sessionInfo()
+
 ```
 
 ---
