@@ -1,0 +1,144 @@
+---
+title: "Equotip hardness measurements - artificial vs natural experiment"
+author: "Lisa Schunk"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+
+```{r Knitr Options, include=FALSE}
+knitr::opts_chunk$set(comment=NA, message=FALSE, indent="", error=TRUE)
+
+```
+
+---
+
+
+# Goal of the script
+This script reads the xlsx file (measurements have been generated with the Equotip Leeb C rebound)  and formats the data for a statistical analysis.  
+The script will:
+
+1. Read in the original xlsx file and organise the data 
+2. Plot the data 
+3. Write an XLSX-file and save an R object ready for further analysis in R 
+
+
+
+```{r}
+dir_in <- "analysis/raw_data_AvsN/"
+dir_out <- "analysis/plots"
+
+```
+
+Raw data must be located in `r paste0("~/", dir_in)`.  
+Formatted data will be saved in `r paste0("~/", dir_out)`.
+The knit directory for this script is the project directory.
+
+
+---
+
+
+# Load packages
+```{r}
+library(openxlsx)
+library(tools)
+library(readr)
+library(ggplot2)
+library(readxl)
+library(tidyverse)
+library(wesanderson)
+
+```
+
+---
+
+
+# Get name, path and information of the file
+```{r}
+data_file <- list.files(dir_in, pattern = "\\.xlsx$", full.names = TRUE)
+md5_in <- md5sum(data_file)
+info_in <- data.frame(files = basename(names(md5_in)), checksum = md5_in, 
+                  row.names = NULL)
+
+```
+
+The checksum (MD5 hashes) of the imported files are:  
+```{r, echo = FALSE}
+info_in
+
+```
+
+
+
+# Read in original xlsx-file
+```{r}
+imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 3, colNames = TRUE, 
+                      rowNames = FALSE, skipEmptyRows = FALSE) 
+
+# changes the mode of 'hardness in HLC from character to numeric 
+imp_data$hardness.in.HLC <- as.numeric(imp_data$hardness.in.HLC)
+str(imp_data)
+
+flint <- imp_data[1:12,]
+lydite <- imp_data[135:24,]
+
+
+```
+
+
+#### 4. Data analsysis - stats  
+```{r}
+# descriptive statistics 
+# flint
+length(flint[["ID"]])
+summary(flint[["hardness.in.HLC"]])
+
+# schist
+length(lydite[["ID"]])
+summary(lydite[["hardness.in.HLC"]])
+
+```
+
+
+# Data analsysis - plot 
+```{r}
+# boxplot
+data_plot <- ggplot (imp_data, aes(y = hardness.in.HLC, x = raw.material, 
+                                   fill = raw.material)) + 
+             theme_classic() + 
+             theme(legend.position = "none") +
+             geom_boxplot(fill = c("#046C9A", "#D69C4E")) +
+             geom_jitter() + labs(x="raw material", y="Leeb Rebound Hardness [HLC]", title="") 
+
+print(data_plot)
+
+```
+
+
+# Save data
+## Define output file name
+```{r}
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "AvsN_plot", ".pdf")
+ggsave(filename = file_out, plot = data_plot, path = dir_out, device = "pdf")
+
+```
+The files will be saved as "`r paste0("~/", dir_out, ".[ext]")`".
+
+---
+
+
+
+# sessionInfo() and RStudio version
+```{r}
+sessionInfo()
+
+```
+
+---
+
+RStudio version `r readLines("analysis/scripts/RStudioVersion.txt", n = 1)`.
+
+
+--- 
+
+END OF SCRIPT
