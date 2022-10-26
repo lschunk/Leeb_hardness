@@ -2,7 +2,13 @@
 title: "Equotip hardness measurements - Tool function experiment"
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
-output: word_document
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
 ---
 
 
