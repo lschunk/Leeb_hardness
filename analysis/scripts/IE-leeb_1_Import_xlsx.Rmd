@@ -2,7 +2,13 @@
 title: "Equotip hardness measurements - 'Initial experiment'"
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
-output: word_document
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
 ---
 
 
@@ -24,7 +30,7 @@ The script will:
 
 
 ```{r}
-dir_in <- "analysis/raw_data/"
+dir_in <- "analysis/raw_data_IE/"
 dir_out <- "analysis/plots"
 
 ```
@@ -36,16 +42,10 @@ The knit directory for this script is the project directory.
 
 ---
 
-
 # Load packages
-```{r}
-library(openxlsx)
-library(readr)
-library(tools)
-library(ggplot2)
-library(readxl)
-library(tidyverse)
-library(wesanderson)
+```{r Libraries}
+pack_to_load <- c("readr", "tools", "openxlsx", "ggplot2", "readxl", "tidyverse", "wesanderson")
+sapply(pack_to_load, library, character.only = TRUE, logical.return = TRUE)
 
 ```
 
@@ -58,14 +58,6 @@ data_file <- list.files(dir_in, pattern = "\\.xlsx$", full.names = TRUE)
 md5_in <- md5sum(data_file)
 info_in <- data.frame(files = basename(names(md5_in)), checksum = md5_in, 
                       row.names = NULL)
-
-```
-
-
-The checksum (MD5 hashes) of the imported files are:  
-```{r, echo = FALSE}
-info_in
-
 ```
 
 
@@ -75,7 +67,7 @@ imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 3,
                       colNames = TRUE,
                       rowNames = FALSE, skipEmptyRows = FALSE) 
 
-# changes the mode of 'hardness in HLC' from character to numeric 
+# change the mode of 'hardness in HLC' from character to numeric 
 imp_data$hardness.in.HLC <- as.numeric(imp_data$hardness.in.HLC)
 str(imp_data)
 
@@ -97,7 +89,7 @@ summary(flint[["hardness.in.HLC"]])
 length(lydite[["raw.material"]])
 summary(lydite[["hardness.in.HLC"]])
 
-# balve (MU-278)
+# Balve (MU-278)
 length(balve[["raw.material"]])
 summary(balve[["hardness.in.HLC"]])
 
@@ -140,8 +132,14 @@ sessionInfo()
 
 ---
 
-RStudio version `r readLines("analysis/scripts/RStudioVersion.txt", n = 1)`.
+RStudio version `r readLines("RStudioVersion.txt", n = 1)`.
 
+
+# Cite R packages used
+```{r Citation}
+for (i in pack_to_load) print(citation(i), bibtex = FALSE)
+
+```
 
 --- 
 

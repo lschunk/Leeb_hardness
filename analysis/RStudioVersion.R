@@ -4,3 +4,4 @@
 
 vers <- as.character(RStudio.Version()$version)
 writeLines(c(vers, "\n"), "analysis/scripts/RStudioVersion.txt")
+
